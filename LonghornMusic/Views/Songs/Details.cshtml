@@ -1,0 +1,33 @@
+﻿@model LonghornMusic.Models.Song
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Song</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>Artist</dt>
+        <dd>@Model.Artist.Name</dd>
+        <dt>Genre</dt>
+        @foreach (var item in Model.Genres)
+        {
+            <dd>@item.Name</dd>
+        }
+    </dl>
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SongID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

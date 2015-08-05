@@ -1,0 +1,104 @@
+﻿@model LonghornMusic.ViewModels.SongIndexData
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Artists
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Artists)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Select", "Index", new { id = item.ArtistID }) |
+                @Html.ActionLink("Edit", "Edit", new { id = item.ArtistID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ArtistID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ArtistID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@if ((Model.Genres != null && Model.Genres.Count() != 0) && ViewBag.ArtistID != null)
+{
+    <table class="table table-striped">
+        <tr>
+            <th>Genre</th>
+            <th>Description</th>
+        </tr>
+
+        @foreach (var g in Model.Genres)
+        {
+            <tr>
+                <td>@g.Name</td>
+                <td>@g.Description</td>
+            </tr>
+        }
+    </table>
+}
+else if (ViewBag.ArtistID == null)//no artist is selected
+{
+    //don't display anything
+}
+
+else //An artist is selected, but doesn't have any genres
+{
+    <table class="table table-striped">
+        <tr>
+            <th>Genre</th>
+            <th>Description</th>
+        </tr>
+
+       <tr>
+           <td colspan="2">This artist is not associated with any genres.</td>
+       </tr>
+    </table>
+}
+
+@if (Model.Songs != null && Model.Songs.Count() != 0 &&  ViewBag.ArtistID != null)
+{
+    <table class="table table-striped">
+        <tr>
+            <th>Song</th>
+        </tr>
+
+        @foreach (var s in Model.Songs)
+        {
+            <tr>
+                <td>@s.Name</td>
+            </tr>
+        }
+    </table>
+}
+else if (ViewBag.ArtistID == null)
+{
+    //no artist is selected, don't do anything
+}
+
+else //artist is selected, but doesn't have any songs
+{
+    <table class="table table-striped">
+        <tr>
+            <th>Song</th>
+        </tr>
+        <tr>
+            <td>This artist is not associated with any songs.</td>
+        </tr>
+    </table>
+}
+

@@ -1,0 +1,81 @@
+﻿@using LonghornMusic.Models;
+@model LonghornMusic.Models.Artist
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Artist</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            Genres
+        </dt>
+        @if (Model.Genres.Count() == 0)
+        {
+            <dd>There are no genres associated with this artist.</dd>
+        }
+        else
+        {
+            foreach (Genre g in Model.Genres)
+            {
+                <dd>@g.Name</dd>
+            }
+        }
+
+
+        <dt>
+            Songs
+        </dt>
+
+        @if (Model.Songs.Count == 0)
+        {
+            <dd>There are no songs associated with this artist.</dd>
+        }
+        else
+        { 
+            foreach (Song s in Model.Songs)
+            {
+                <dd>@s.Name</dd>
+            }
+        }
+    </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ArtistID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<LonghornMusic.Models.Song>
+@{ViewBag.Title = "Search";}
+
+<h2>Search for a Song</h2>
+
+<div>
+    @using (Html.BeginForm("Search", "Songs", FormMethod.Get))
+    {
+        <p>
+            <div>
+                Title: @Html.TextBox("searchString") <br />
+            </div>  
+            <div>
+                <input type="radio" name="searchType" value=@SearchTypes.KEYWORD checked="checked" />Keyword
+                <input type="radio" name="searchType" value=@SearchTypes.EXACT />Exact
+            </div>
+            <div>
+                <input type="submit" value="Search" />
+            </div>
+</p>
+    }
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Song Title</th>
+            <th>Artist</th>
+        </tr>
+    </thead>
+
+    @if (Model.Count() > 0 && Model != null)
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Artist.Name</td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td colspan="2">No Songs Found</td>
+        </tr>
+    }
+
+</table>
