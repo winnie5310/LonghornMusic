@@ -176,26 +176,51 @@ namespace LonghornMusic.Controllers
         //    return View(db.Song.ToList());
         //}
         
-        public ActionResult Search(string searchString, SearchTypes? searchType)
+        public ActionResult Search(string searchTitle, SearchTypes? searchType, int? searchArtist, bool? ORSearch)
         {
             var songs = from s in db.Song
                         select s;
 
             //songs.Include(s => s.Artist);
-
-            if (String.IsNullOrEmpty(searchString) == false)
+            if (ORSearch == false) //this is an AND search
             {
-                if (searchType == SearchTypes.KEYWORD)
+                if (String.IsNullOrEmpty(searchTitle) == false)
                 {
-                    songs = songs.Where(s => s.Name.Contains(searchString));
+                    if (searchType == SearchTypes.KEYWORD)
+                    {
+                        songs = songs.Where(s => s.Name.Contains(searchTitle));
+                    }
+
+                    else
+                    {
+                        songs = songs.Where(s => s.Name == searchTitle);
+                    }
                 }
 
-                else
+                if (searchArtist != null && searchArtist != -1) //there is something to search for in artist
                 {
-                    songs = songs.Where(s => s.Name == searchString);
+                    songs = songs.Where(s => s.Artist.ArtistID == searchArtist);
                 }
             }
+            else if (ORSearch == true) //this is an or search
+            {
+                if (searchType == SearchTypes.KEYWORD)
+                { 
+                    songs = songs.Where(s => s.Name.Contains(searchTitle) || s.Artist.ArtistID == searchArtist);
+                }
+                else if (searchType == SearchTypes.EXACT)
+                {
+                    songs = songs.Where(s => s.Name == searchTitle || s.Artist.ArtistID == searchArtist);
+                }
 
+            }
+            
+
+
+
+
+
+            ViewBag.AllArtists = UpdateArtists.GetAllArtistsWithAll(db);
             return View(songs.ToList());
         }
 

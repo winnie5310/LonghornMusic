@@ -1,48 +1,74 @@
 ﻿@model IEnumerable<LonghornMusic.Models.Song>
 @{ViewBag.Title = "Search";}
-
+<div class="container">
 <h2>Search for a Song</h2>
 
 <div>
-    @using (Html.BeginForm("Search", "Songs", FormMethod.Get))
+    @using (Html.BeginForm("Search", "Songs", FormMethod.Get, new { @class = "form-inline"}))
     {
-        <p>
-            <div>
-                Title: @Html.TextBox("searchString") <br />
-            </div>  
-            <div>
-                <input type="radio" name="searchType" value=@SearchTypes.KEYWORD checked="checked" />Keyword
-                <input type="radio" name="searchType" value=@SearchTypes.EXACT />Exact
+        
+            <div class="row">
+                <div class ="col-md-3">
+                    <label class="control-label">
+                        Title:         
+                        @Html.TextBox("searchTitle", null, new { @class = "form-control" }) <br />
+                    </label>  
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">Search Type:</label>
+                    <label class="radio-inline"><input type="radio" name="searchType" value="@SearchTypes.KEYWORD" checked="checked"/>Keyword</label>
+                    <label class="radio-inline"><input type="radio" name="searchType" value="@SearchTypes.EXACT" />Exact</label>
+                </div>
             </div>
-            <div>
-                <input type="submit" value="Search" />
+    <br />
+    <br />
+            <div class="row">
+                <div class="col-md-3">
+                    <!--select the first artist in the list-->
+                    <label class="control-label">Artist:@Html.DropDownList("searchArtist",(SelectList)ViewBag.AllArtists, new { @class = "form-control"})</label>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">@Html.CheckBox("ORSearch", false, new { @class = "checkbox" })Make this an OR search</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="submit" value="Search" class="btn btn-active"/>
+                </div>
             </div>
-</p>
+       
     }
-</div>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Song Title</th>
-            <th>Artist</th>
-        </tr>
-    </thead>
+ </div> 
+    <br />
+    <br />
+    @Html.ActionLink("Reset Form", "Search", null, new { @class = "btn btn-active" })
 
-    @if (Model.Count() > 0 && Model != null)
-    {
-        foreach (var item in Model)
+    <br />
+    <br />   
+ <div class="row">
+     <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Song Title</th>
+                <th>Artist</th>
+            </tr>
+        </thead>
+
+        @if (Model.Count() > 0 && Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(item.Name, "Details", new { id = item.SongID })</td>
+                    <td>@item.Artist.Name</td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>@item.Name</td>
-                <td>@item.Artist.Name</td>
+                <td colspan="2">No Songs Found</td>
             </tr>
         }
-    }
-    else
-    {
-        <tr>
-            <td colspan="2">No Songs Found</td>
-        </tr>
-    }
 
-</table>
+    </table>
+</div>
+</div>

@@ -36,6 +36,7 @@ namespace LonghornMusic.Utilities
         public static MultiSelectList GetAllGenres(StoreContext context)
         {
             var genres = from g in context.Genre
+                         orderby g.Name
                          select g;
 
             List<Genre> allGenres = genres.ToList();

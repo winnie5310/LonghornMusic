@@ -13,6 +13,7 @@ namespace LonghornMusic.Utilities
         public static SelectList GetAllArtists(StoreContext db)
         {
             var query = from a in db.Artist
+                        orderby a.Name
                         select a;
             List<Artist> allArtists = query.ToList();
 
@@ -20,6 +21,20 @@ namespace LonghornMusic.Utilities
 
             return list;
 
+        }
+
+        public static SelectList GetAllArtistsWithAll(StoreContext db)
+        {
+            var query = from a in db.Artist
+                        orderby a.Name
+                        select a;
+            List<Artist> allArtists = query.ToList();
+
+            allArtists.Insert(0, new Artist { ArtistID = -1, Name = "All Artists" });
+
+            SelectList list = new SelectList(allArtists, "ArtistID", "Name");
+
+            return list;
         }
 
         public static void AddOrUpdateArtist(StoreContext db, Song song, Artist artistToAdd)
